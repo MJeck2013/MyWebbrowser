@@ -36,6 +36,9 @@ st.title("!No_School!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
 
 if IO:
+    IO = IO.replace("uck", "***").replace("hit", "***").replace("as"+"s", "a**").replace("nigg"+"er", "This User should Be ashamed of themselves for using the N word").replace("hell", "\"down there\"")
+    if IO != "cmd":
+        global_state["active_sessions"][session_id] = IO
     if "youtube.com" in IO:
         search_term = IO.replace("youtube.com", "").strip()
         if not search_term:
@@ -55,8 +58,7 @@ if IO:
                     st.text(f"ID: {sid[:6]}... | Input: {name} | Status: {status}")
             else:
                 st.text("No other users active right now.")
-            cmd = st.text_input("What's The Command Johnathan")
-            
+            cmd = st.text_input("What's The Command Johnathan?")
             if cmd:
                 # Command to freeze someone (e.g., "freeze <name>")
                 if cmd.startswith("freeze "):
@@ -93,19 +95,19 @@ if IO:
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
     elif ".s" in IO:
         IO = IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Science Question For this User Please: " + IO)
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Science Question For A User Please: " + IO)
         st.write("Alright Heres A Summery/Answer: " + response.text)
     elif ".h" in IO:
         IO = IO.replace(".h", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Science Question For this User Please: " + IO)
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this History Question For A User Please: " + IO)
         st.write("Alright Heres A Summery/Answer: " + response.text)
     elif ".e" in IO:
         IO = IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Science Question For this User Please: " + IO)
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this English Question For A User Please: " + IO)
         st.write("Alright Heres A Summery/Answer: " + response.text)
     elif ".m" in IO:
         IO = IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Science Question For this User Please: " + IO)
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Math Question For A User Please: " + IO)
         st.write("Alright Heres A Summery/Answer: " + response.text)
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
@@ -127,9 +129,9 @@ if IO:
             st.write(f"{math} = {answer}")
             sys.set_int_max_str_digits(4300)
         except:
-            st.write("An Error has been reported in the calculator: {Exception}")
+            st.write(f"An Error has been reported in the calculator: {Exception}")
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
         response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write(f"I don't know what that means yet but heres a response from Gemini: " + response.text)
+        st.write(f"I don't quite know what that means yet but heres a response from Gemini: " + response.text)
