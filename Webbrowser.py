@@ -94,21 +94,25 @@ if IO:
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
     elif ".s" in IO:
-        IO = IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Science Question For A User Please: " + IO)
-        st.write("Alright Heres A Summery/Answer: " + response.text)
+        IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.writ(response.text)
     elif ".h" in IO:
-        IO = IO.replace(".h", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this History Question For A User Please: " + IO)
-        st.write("Alright Heres A Summery/Answer: " + response.text)
+        IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.writ(response.text)
     elif ".e" in IO:
-        IO = IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this English Question For A User Please: " + IO)
-        st.write("Alright Heres A Summery/Answer: " + response.text)
+        IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.writ(response.text)
     elif ".m" in IO:
-        IO = IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents="Answer this Math Question For A User Please: " + IO)
-        st.write("Alright Heres A Summery/Answer: " + response.text)
+        IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
+        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.writ(response.text)
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
             sys.set_int_max_str_digits(99999)
