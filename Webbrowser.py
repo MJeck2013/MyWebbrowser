@@ -45,10 +45,6 @@ if IO:
             try2 = f"https://www.youtube.com/results?search_query={safe_search}"
             st.write(f"Searching YouTube for: *{search_term}*")
             st.write(f"Click here to see the search results for {safe_search}: {try2}")
-     elif IO == "cmd":
-        admin_password = st.text_input("Enter Admin Password", type="password")
-        if admin_password == st.secrets["ADMIN_PASSWORD"]:
-            cmd = st.text_input("What's The Command Johnathan?")
     elif IO == "cmd":
         admin_password = st.text_input("Enter Admin Password", type="password")
         if admin_password == st.secrets["ADMIN_PASSWORD"]:
