@@ -49,7 +49,7 @@ if IO:
         admin_password = st.text_input("Enter Admin Password", type="password")
         if admin_password == st.secrets["ADMIN_PASSWORD"]:
             cmd = st.text_input("What's The Command Johnathan?")
-elif IO == "cmd":
+    elif IO == "cmd":
         admin_password = st.text_input("Enter Admin Password", type="password")
         if admin_password == st.secrets["ADMIN_PASSWORD"]:
             st.subheader("Online Users")
