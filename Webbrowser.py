@@ -4,7 +4,7 @@ import urllib.parse
 import os
 import time
 import sys
-
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 @st.cache_resource
 def get_global_state():
     return {
@@ -95,24 +95,24 @@ if IO:
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
     elif ".s" in IO:
         IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summery/Answer: ")
-        st.writ(response.text)
+        st.write(response.text)
     elif ".h" in IO:
         IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summery/Answer: ")
-        st.writ(response.text)
+        st.write(response.text)
     elif ".e" in IO:
         IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summery/Answer: ")
-        st.writ(response.text)
+        st.write(response.text)
     elif ".m" in IO:
         IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summery/Answer: ")
-        st.writ(response.text)
+        st.write(response.text)
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
             sys.set_int_max_str_digits(99999)
@@ -137,5 +137,5 @@ if IO:
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
-        response = genai.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write(f"I don't quite know what that means yet but heres a response from Gemini: " + response.text)
