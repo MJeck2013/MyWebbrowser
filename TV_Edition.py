@@ -12,7 +12,7 @@ session_id = st.runtime.scriptrunner.get_script_run_ctx().session_id
 
 st.write(f"📺 {current_time}")
 st.title("!Welcome To NoSchool!")
-st.subheader("On the Big Screen Edition")
+st.subheader("On the Big Screen!")
 
 IO = st.text_input("The Official TV Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
 
@@ -103,26 +103,26 @@ if IO:
             
     elif ".s" in IO:
         IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
-        response = client.models.generate_content(model="gemini-3-pro", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
         st.write("Alright Heres A Summary/Answer: ")
         st.write(response.text)
         
     elif ".h" in IO:
         IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
-        response = client.models.generate_content(model="gemini-3-pro", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
         st.write("Alright Heres A Summary/Answer: ")
         st.write(response.text)
         
     elif ".e" in IO:
         IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
-        response = client.models.generate_content(model="gemini-3.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summary/Answer: ")
         st.write(response.text)
         
     elif ".m" in IO:
         IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
         pro_response = client.models.generate_content(
-            model="gemini-3.1-pro-preview",
+            model="gemini-2.5-pro",
             contents=IO,
             config=types.GenerateContentConfig(
                 thinking_config=types.ThinkingConfig(
@@ -135,13 +135,13 @@ if IO:
         
     elif ".l" in IO:
         IO = "Translate or answer this Language/Foreign Language Question For A User: " + IO.replace(".l", "")
-        response = client.models.generate_content(model="gemini-3.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summary/Answer: ")
         st.write(response.text)
         
     elif ".c" in IO:
         IO = "Answer this Cooking/Recipe Question For A User Please: " + IO.replace(".c", "")
-        response = client.models.generate_content(model="gemini-3.5-flash", contents=IO)
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write("Alright Heres A Summary/Answer: ")
         st.write(response.text)
         
@@ -167,7 +167,7 @@ if IO:
             )
         )
         response = client.models.generate_content(
-            model="gemini-3.5-flash", 
+            model="gemini-2.5-flash", 
             contents=st.session_state["chat_history"]
         )
         st.session_state["chat_history"].append(
