@@ -1,4 +1,5 @@
 import datetime
+import subprocess
 from google.genai import types
 import streamlit as st
 import google.genai as genai
@@ -7,6 +8,7 @@ import os
 import time
 import sys
 
+# Initialize the Gemini Client
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 @st.cache_resource
@@ -40,16 +42,23 @@ try:
 except AttributeError:
     user_agent = ""
 
-is_tv = any(tv_word in user_agent for tv_word in ["tv", "smarttv", "appletv", "googletv", "webos", "tizen"])
+# 1. Route Smart TVs to the TV Python script
+is_tv = any(tv_word in user_agent for tv_word in ["tv", "smarttv", "appletv", "googletv", "webos", "tizen", "roku", "android", "samsung", "linux"])
 if is_tv:
     with open("TV_Edition.py", "r") as tv_file:
         exec(tv_file.read())
     st.stop()
 is_game = any(tv_word in user_agent for tv_word in ["xbox", "nintendo", "switch", "playstation", "ps5", "ps4"])
 if is_game:
-    with open("Game_Edition.py", "r") as game_file:
-        exec(game_file.read())
+    st.title("!No_School! Console Engine Initializing...")
+    if not os.path.exists("./ConsoleApp"):
+        with st.spinner("Compiling high-performance C++ Core..."):
+            subprocess.run(["g++", "-O3", "Game_Edition.cpp", "-o", "ConsoleApp", "-lcurl"])
+    st.success("C++ Core Loaded with 0% Lag Architecture.")
+    subprocess.run(["./ConsoleApp"])
     st.stop()
+
+# 3. Default Browser Interface for Standard Computers/Phones
 st.write(f"{current_time}")
 st.title("!No_School!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
