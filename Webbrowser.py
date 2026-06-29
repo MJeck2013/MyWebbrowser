@@ -49,14 +49,41 @@ if is_tv:
     st.stop()
 is_game = any(tv_word in user_agent for tv_word in ["xbox", "nintendo", "switch", "playstation", "ps5", "ps4"])
 if is_game:
-    st.title("!No_School! Console Engine Initializing...")
-    if not os.path.exists("./ConsoleApp"):
-        with st.spinner("Compiling high-performance C++ Core..."):
-            subprocess.run(["g++", "-O3", "Game_Edition.cpp", "-o", "ConsoleApp", "-lcurl"])
-    st.success("C++ Core Loaded")
-    env = os.environ.copy()
-    env["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
-    subprocess.run(["./ConsoleApp"], env=env)
+    st.markdown("""
+        <style>
+            .stApp { background-color: #121212; color: #00FF00; }
+            input { background-color: #222222 !important; color: #00FF00 !important; font-family: monospace; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.title("🎮 !No_School! Xbox Edition")
+    st.caption("Optimized Core Loop | 0% Frame Lag Architecture")
+    
+    IO = st.text_input("Enter Search, Shortcut, or Chat Command:").lower()
+    
+    if IO:
+        IO = IO.replace("uck", "***").replace("hit", "***").replace("hell", "\"down there\"")
+        
+        if "youtube.com" in IO:
+            st.success("Routing to Video Player...")
+            # Your fast YouTube redirect logic here
+        else:
+            if "chat_history" not in st.session_state:
+                st.session_state["chat_history"] = [
+                    types.Content(role="user", parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher...")]),
+                    types.Content(role="model", parts=[types.Part.from_text(text="Understood.")])
+                ]
+            
+            st.session_state["chat_history"].append(types.Content(role="user", parts=[types.Part.from_text(text=IO)]))
+            
+            # This calls the fast flash engine instantly over the cloud!
+            response = client.models.generate_content(
+                model="gemini-2.5-flash", 
+                contents=st.session_state["chat_history"]
+            )
+            
+            st.session_state["chat_history"].append(types.Content(role="model", parts=[types.Part.from_text(text=response.text)]))
+            st.markdown(f"**BetterTeacher:**\n\n{response.text}")
     st.stop()
 st.write(f"{current_time}")
 st.title("!No_School!")
