@@ -150,24 +150,33 @@ if IO:
         st.write(response.text)
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
-    else:
+else:
         if "chat_history" not in st.session_state:
-            # We start with your custom system instruction so the AI always remembers its role!
             st.session_state["chat_history"] = [
-                {
-                    "role": "user", 
-                    "parts": ["Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity but don't explicitly say that what you are trying to do."]
-                },
-                {
-                    "role": "model", 
-                    "parts": ["Understood. I am BetterTeacher, ready to guide users with curiosity and instructional clarity."]
-                }
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity but don't explicitly say that what you are trying to do.")]
+                ),
+                types.Content(
+                    role="model",
+                    parts=[types.Part.from_text(text="Understood. I am BetterTeacher, ready to guide users with curiosity and instructional clarity.")]
+                )
             ]
-        st.session_state["chat_history"].append({"role": "user", "parts": [IO]})
+        st.session_state["chat_history"].append(
+            types.Content(
+                role="user",
+                parts=[types.Part.from_text(text=IO)]
+            )
+        )
         response = client.models.generate_content(
             model="gemini-3.5-flash", 
             contents=st.session_state["chat_history"]
         )
-        st.session_state["chat_history"].append({"role": "model", "parts": [response.text]})
+        st.session_state["chat_history"].append(
+            types.Content(
+                role="model",
+                parts=[types.Part.from_text(text=response.text)]
+            )
+        )
         st.write("Here is an AI response:")
         st.write(response.text)
