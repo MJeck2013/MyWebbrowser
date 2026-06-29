@@ -138,7 +138,7 @@ if IO:
         except:
             AO()
     elif ".h" in IO:
-        try
+        try:
             IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
             response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
             st.write("Alright Heres A Summery/Answer: ")
