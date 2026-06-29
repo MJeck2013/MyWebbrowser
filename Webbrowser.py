@@ -47,7 +47,7 @@ if is_tv:
     st.stop()
 is_game = any(tv_word in user_agent for tv_word in ["xbox", "nintendo", "switch", "playstation", "ps5", "ps4"])
 if is_game:
-    with open("TV_Edition.py", "r") as game_file:
+    with open("Game_Edition.py", "r") as game_file:
         exec(game_file.read())
     st.stop()
 st.write(f"{current_time}")
