@@ -1,3 +1,4 @@
+import datetime
 import streamlit as st
 import google.genai as genai
 import urllib.parse
@@ -10,31 +11,28 @@ def get_global_state():
     return {
         "announcement": "Welcome to the official browser!",
         "is_active": True,
-        "frozen_users": set(),     # Tracks session IDs that are frozen
-        "active_sessions": {}      # Tracks active session_id -> user label
+        "frozen_users": set(),     
+        "active_sessions": {}      
     }
-
+now = datetime.datetime.now()
+current_time = now.strftime("%I:%M %p")
 global_state = get_global_state()
-
-# Get the unique session ID for the current browser tab
 session_id = st.runtime.scriptrunner.get_script_run_ctx().session_id
-
-# 1. Freeze Check (If this specific user is frozen, lock their screen)
 if session_id in global_state["frozen_users"]:
     st.error("Your session has been temporarily frozen by the administrator.")
     st.stop()
-
-# 2. Global Active Check
 if not global_state["is_active"]:
     st.error("This server has been shut down by the administrator.")
     st.stop()
-
-# 3. Global Announcement
 if global_state["announcement"]:
     st.info(global_state["announcement"])
+st.write(f"{current_time}")
 st.title("!No_School!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
-
+if "PM" in current_time:
+    current_tim = int(current_time.replace("PM", "").replace(":", "").strip())
+    if current_tim > 159 and current_tim < 301:
+        st.write("⚠️ Warning: System Updates may occur.")
 if IO:
     IO = IO.replace("uck", "***").replace("hit", "***").replace("as"+"s", "a**").replace("nigg"+"er", "This User should Be ashamed of themselves for using the N word").replace("hell", "\"down there\"")
     if IO != "cmd":
@@ -69,8 +67,6 @@ if IO:
                             global_state["frozen_users"].add(sid)
                             st.success(f"Froze session for {name}")
                     st.rerun()
-                
-                # Command to unfreeze someone (e.g., "unfreeze <name>")
                 elif cmd.startswith("unfreeze "):
                     target = cmd.replace("unfreeze ", "").strip()
                     for sid, name in global_state["active_sessions"].items():
@@ -78,8 +74,6 @@ if IO:
                             global_state["frozen_users"].discard(sid)
                             st.success(f"Unfroze session for {name}")
                     st.rerun()
-                    
-                # Your existing broadcast and exit commands...
                 elif cmd.startswith("broadcast "):
                     msg = cmd.replace("broadcast ", "")
                     global_state["announcement"] = msg
@@ -93,26 +87,6 @@ if IO:
                     st.stop()
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
-    elif ".s" in IO:
-        IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
-    elif ".h" in IO:
-        IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
-    elif ".e" in IO:
-        IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
-    elif ".m" in IO:
-        IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
             sys.set_int_max_str_digits(99999)
@@ -134,9 +108,52 @@ if IO:
             sys.set_int_max_str_digits(4300)
         except:
             st.write(f"An Error has been reported in the calculator: {Exception}")
+    elif ".s" in IO:
+        IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
+        response = client.models.generate_content(model="gemini-3-pro", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.write(response.text)
+    elif ".h" in IO:
+        IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
+        response = client.models.generate_content(model="gemini-3-pro", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.write(response.text)
+    elif ".e" in IO:
+        IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
+        response = client.models.generate_content(model="gemini-3.5-flash", contents=IO)
+        st.write("Alright Heres A Summery/Answer: ")
+        st.write(response.text)
+    elif ".m" in IO:
+        IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
+        pro_response = client.models.generate_content(
+            model="gemini-3.1-pro-preview",
+            contents=IO,
+            config=types.GenerateContentConfig(
+                thinking_config=types.ThinkingConfig(
+                    thinking_level="HIGH"
+                )
+            ) 
+        )
+        st.write("Alright Heres A Summary/Answer: ")
+        st.write(pro_response.text)
+    elif ".l" in IO:
+        IO = "Translate or answer this Language/Foreign Language Question For A User: " + IO.replace(".l", "")
+        response = client.models.generate_content(model="gemini-3.5-flash", contents=IO)
+        st.write("Alright Heres A Summary/Answer: ")
+        st.write(response.text)
+    elif ".c" in IO:
+        IO = "Answer this Cooking/Recipe Question For A User Please: " + IO.replace(".c", "")
+        response = client.models.generate_content(model="gemini-3.5-flash", contents=IO)
+        st.write("Alright Heres A Summary/Answer: ")
+        st.write(response.text)
+    elif "can you do math" in IO:
+        st.write("Yes! Just type in a math equation or use .m for deep problems, and I'll do it for you!")
+    else:
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
+        st.write(f"I don't quite know what that means yet but heres a response from Gemini:\n{response.text}")
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
         response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
         st.write(f"""I don't quite know what that means yet but heres a response from Gemini: 
-""" + response.text)
+{response.text}""")
