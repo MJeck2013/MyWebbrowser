@@ -148,9 +148,6 @@ if IO:
         st.write(response.text)
     elif "can you do math" in IO:
         st.write("Yes! Just type in a math equation or use .m for deep problems, and I'll do it for you!")
-    else:
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write(f"I don't quite know what that means yet but heres a response from Gemini:\n{response.text}")
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
