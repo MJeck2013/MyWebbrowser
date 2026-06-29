@@ -49,7 +49,7 @@ if is_tv:
         exec(tv_file.read())
     st.stop()
 st.write(f"{current_time}")
-st.title("!No_School!")
+st.title("Welcome To NoSchool")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
 
 if "PM" in current_time:
@@ -285,7 +285,7 @@ if IO:
                             )
                             st.write("Here is an AI response (Pro Engine):")
                             st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
-                        except:
-                            st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
+                        except:    
+                            AO()
         else:
             st.warning("Please type a valid question or search term!")
