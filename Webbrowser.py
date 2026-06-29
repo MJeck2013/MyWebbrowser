@@ -122,7 +122,6 @@ if IO:
                     st.write(f"{math} = {answer}")
                 except:
                     st.write("Hey dude you know you cant divide 1 by 0 right?")
-            answer = eval(math)
             st.write(f"{math} = {answer}")
             sys.set_int_max_str_digits(4300)
         except Exception as E:
