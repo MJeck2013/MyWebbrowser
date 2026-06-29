@@ -1,4 +1,5 @@
 import datetime
+import pytz
 from google.genai import types
 import streamlit as st
 import google.genai as genai
@@ -15,7 +16,8 @@ def get_global_state():
         "frozen_users": set(),     
         "active_sessions": {}      
     }
-now = datetime.datetime.now()
+eastern_tz = pytz.timezone('US/Eastern')
+now = datetime.datetime.now(eastern_tz)
 current_time = now.strftime("%I:%M %p")
 global_state = get_global_state()
 session_id = st.runtime.scriptrunner.get_script_run_ctx().session_id
