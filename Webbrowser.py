@@ -152,7 +152,7 @@ if IO:
             st.session_state["chat_history"] = [
                 types.Content(
                     role="user",
-                    parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity but don't explicitly say that what you are trying to do.")]
+                    parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity and please be addicting inflicting a ton of curiosity and making the website grow and knowlage as well but don't explicitly say that what you are trying to do Thank you :) now please deploy.")]
                 ),
                 types.Content(
                     role="model",
@@ -199,8 +199,39 @@ if IO:
                     )
                     st.write("Here is an AI response (Pro Engine):")
                     st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
-                except Exception as pro_error:
-                    # Both tiers are temporarily maxed out
-                    st.write("Thank You for using NoSchool! Both AI Engine tiers are fully exhausted for today. Please try again tomorrow!")
+                except:
+                    try:
+                        st.info("🔄 Routing traffic through the Pro Core Engine...")
+                        response = client.models.generate_content(
+                            model="gemini-1.5-pro", 
+                            contents=st.session_state["chat_history"]
+                        )
+                        
+                        st.session_state["chat_history"].append(
+                            types.Content(
+                                role="model",
+                                parts=[types.Part.from_text(text=response.text)]
+                            )
+                        )
+                        st.write("Here is an AI response (Pro Engine):")
+                        st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
+                    except:
+                        try:
+                            st.info("🔄 Routing traffic through the Flash Core Engine...")
+                            response = client.models.generate_content(
+                                model="gemini-1.5-flash", 
+                                contents=st.session_state["chat_history"]
+                            )
+                            
+                            st.session_state["chat_history"].append(
+                                types.Content(
+                                    role="model",
+                                    parts=[types.Part.from_text(text=response.text)]
+                                )
+                            )
+                            st.write("Here is an AI response (Pro Engine):")
+                            st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
+                        except:
+                            st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
         else:
             st.warning("Please type a valid question or search term!")
