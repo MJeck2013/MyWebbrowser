@@ -41,10 +41,9 @@ try:
     user_agent = st.context.headers.get("User-Agent", "").lower()
 except AttributeError:
     user_agent = ""
-
-# 1. Route Smart TVs to the TV Python script
 is_tv = any(tv_word in user_agent for tv_word in ["tv", "smarttv", "appletv", "googletv", "webos", "tizen", "roku", "android", "samsung", "linux"])
 if is_tv:
+    os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
     with open("TV_Edition.py", "r") as tv_file:
         exec(tv_file.read())
     st.stop()
@@ -54,11 +53,11 @@ if is_game:
     if not os.path.exists("./ConsoleApp"):
         with st.spinner("Compiling high-performance C++ Core..."):
             subprocess.run(["g++", "-O3", "Game_Edition.cpp", "-o", "ConsoleApp", "-lcurl"])
-    st.success("C++ Core Loaded with 0% Lag Architecture.")
-    subprocess.run(["./ConsoleApp"])
+    st.success("C++ Core Loaded")
+    env = os.environ.copy()
+    env["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+    subprocess.run(["./ConsoleApp"], env=env)
     st.stop()
-
-# 3. Default Browser Interface for Standard Computers/Phones
 st.write(f"{current_time}")
 st.title("!No_School!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
@@ -67,7 +66,6 @@ if "PM" in current_time:
     current_tim = int(current_time.replace("PM", "").replace(":", "").strip())
     if current_tim > 159 and current_tim < 301:
         st.write("⚠️ Warning: System Updates may occur.")
-
 if IO:
     IO = IO.replace("uck", "***").replace("hit", "***").replace("as"+"s", "a**").replace("nigg"+"er", "This User should Be ashamed of themselves for using the N word").replace("hell", "\"down there\"")
     if IO != "cmd":
