@@ -128,44 +128,82 @@ if IO:
             st.write(f"An Error has been reported in the calculator: {E}")
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
+    def AO():
+        st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
     elif ".s" in IO:
-        IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
-        response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
+        try:
+            IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
+            response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
+            st.write("Alright Heres A Summery/Answer: ")
+            st.write(response.text)
+        except:
+            AO()
     elif ".h" in IO:
-        IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
-        response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
+        try
+            IO = "Answer this History Question For A User Please: " + IO.replace(".h", "")
+            response = client.models.generate_content(model="gemini-2.5-pro", contents=IO)
+            st.write("Alright Heres A Summery/Answer: ")
+            st.write(response.text)
+        except:
+            AO()
     elif ".e" in IO:
-        IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summery/Answer: ")
-        st.write(response.text)
+        try:
+            IO = "Answer this English Question For A User Please: " + IO.replace(".e", "")
+            response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
+            st.write("Alright Heres A Summery/Answer: ")
+            st.write(response.text)
+        except:
+            AO()
     elif ".m" in IO:
-        IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
-        pro_response = client.models.generate_content(
-            model="gemini-2.5-pro",
-            contents=IO,
-            config=types.GenerateContentConfig(
-                thinking_config=types.ThinkingConfig(
-                    thinking_level="HIGH"
-                )
-            ) 
-        )
-        st.write("Alright Heres A Summary/Answer: ")
-        st.write(pro_response.text)
+        try:
+            IO = "Answer this Math Question For A User Please: " + IO.replace(".m", "")
+            pro_response = client.models.generate_content(
+                model="gemini-2.5-pro",
+                contents=IO,
+                config=types.GenerateContentConfig(
+                    thinking_config=types.ThinkingConfig(
+                        thinking_level="HIGH"
+                    )
+                ) 
+            )
+            st.write("Alright Heres A Summary/Answer: ")
+            st.write(pro_response.text)
+        except:
+            AO()
     elif ".l" in IO:
-        IO = "Translate or answer this Language/Foreign Language Question For A User: " + IO.replace(".l", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summary/Answer: ")
-        st.write(response.text)
+        try:
+            IO = "Translate or answer this Language/Foreign Language Question For A User: " + IO.replace(".l", "")
+            response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
+            st.write("Alright Heres A Summary/Answer: ")
+            st.write(response.text)
+        except:
+            AO()
     elif ".c" in IO:
-        IO = "Answer this Cooking/Recipe Question For A User Please: " + IO.replace(".c", "")
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write("Alright Heres A Summary/Answer: ")
-        st.write(response.text)
+        try:
+            IO = "Answer this Cooking/Recipe Question For A User Please: " + IO.replace(".c", "")
+            response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
+            st.write("Alright Heres A Summary/Answer: ")
+            st.write(response.text)
+        except:
+            AO()
+    elif ".i" in IO:
+        prompt = IO.replace(".i", "").strip()
+        st.caption(f"Drawing for: {prompt}")
+        try:
+            image_response = client.models.generate_image(
+                model="imagen-3.0-generate-001",
+                prompt=prompt,
+                config=types.GenerateImageConfig(
+                    output_mime_type="image/jpeg",
+                    aspect_ratio="16:9", 
+                    safety_settings=[types.SafetySetting(
+                        category="HARM_CATEGORY_HATE_SPEECH", 
+                        threshold="BLOCK_ONLY_HIGH")]
+                )
+            )
+            st.image(image_response.generated_images[0].image_bytes, caption=prompt)
+        except:
+            AO()
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
@@ -204,9 +242,7 @@ if IO:
                 st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
                 
             except Exception as e:
-                # Flash tier limit hit! Automatically shift to the Pro Tier backup
                 try:
-                    st.info("🔄 Routing traffic through the Pro Core Engine...")
                     response = client.models.generate_content(
                         model="gemini-2.5-pro", 
                         contents=st.session_state["chat_history"]
@@ -222,7 +258,6 @@ if IO:
                     st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
                 except:
                     try:
-                        st.info("🔄 Routing traffic through the Pro Core Engine...")
                         response = client.models.generate_content(
                             model="gemini-1.5-pro", 
                             contents=st.session_state["chat_history"]
@@ -238,7 +273,6 @@ if IO:
                         st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
                     except:
                         try:
-                            st.info("🔄 Routing traffic through the Flash Core Engine...")
                             response = client.models.generate_content(
                                 model="gemini-1.5-flash", 
                                 contents=st.session_state["chat_history"]
