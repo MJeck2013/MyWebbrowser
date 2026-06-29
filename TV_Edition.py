@@ -10,6 +10,7 @@ import time
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 global_state = get_global_state()
 session_id = st.runtime.scriptrunner.get_script_run_ctx().session_id
+current_time = datetime.datetime.now().strftime("%I:%M %p")
 
 st.write(f"📺 {current_time}")
 st.title("!Welcome To NoSchool!")
@@ -23,7 +24,7 @@ if "PM" in current_time:
         st.write("⚠️ Warning: System Updates may occur.")
 
 if IO:
-    IO = IO.replace("uck", "***").replace("hit", "***").replace("as"+"s", "a**").replace("nigg"+"er", "This User should Be ashamed of themselves for using the N word").replace("hell", "\"down there\"")
+    IO = IO.replace("uck", "***").replace("hell", "\"down there\"")
     
     if IO != "cmd":
         global_state["active_sessions"][session_id] = IO + " (TV)"
