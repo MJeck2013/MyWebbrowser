@@ -84,7 +84,7 @@ if IO:
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
             sys.set_int_max_str_digits(99999)
-            math = IO.lower().replace("plus", "+").replace("minus", "-").replace("times", "*").replace("divided by", "/").replace("hello", "hi").replace("hi", "").replace("to the power of", "**").replace("raised to", "**").replace("squared", "**2").replace("cubed", "**3").replace("the", "").replace("solve", "").replace("math", "").replace("do", "").replace("can ", "h").replace("you", "i").replace(".", "").replace("?", "").replace("!", "").replace(" ", "").replace("me", "").replace("for", "").replace("whatis", "").replace("whats", "").replace("what's", "")
+            math = IO.lower().replace("plus", " + ").replace("minus", " - ").replace("times", " * ").replace("divided by", " / ").replace("hello", "hi").replace("hi", "").replace("to the power of", " ** ").replace("raised to", " ** ").replace("squared", " ** 2 ").replace("cubed", " ** 3").replace("the", "").replace("solve", "").replace("math", "").replace("do", "").replace("can ", "h").replace("you", "i").replace(".", "").replace("?", "").replace("!", "").replace(" ", "").replace("me", "").replace("for", "").replace("whatis", "").replace("whats", "").replace("what's", "")
             if "hi" in math:
                 st.write("Yes I can do that for you!")
                 time.sleep(1)
@@ -94,10 +94,9 @@ if IO:
             else:
                 try:
                     answer = eval(math)
-                    st.write(f"{math} = {answer}")
+                    st.write(f"The answer to {math} is {answer}")
                 except:
                     st.write("Hey dude you know you cant divide 1 by 0 right?")
-            answer = eval(math)
             st.write(f"{math} = {answer}")
             sys.set_int_max_str_digits(4300)
         except Exception as E:
