@@ -159,6 +159,7 @@ if IO:
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
+        # Initialize history if it's missing
         if "chat_history" not in st.session_state:
             st.session_state["chat_history"] = [
                 types.Content(
@@ -170,24 +171,33 @@ if IO:
                     parts=[types.Part.from_text(text="Understood. I am BetterTeacher, ready to guide users with curiosity and instructional clarity.")]
                 )
             ]
-        st.session_state["chat_history"].append(
-            types.Content(
-                role="user",
-                parts=[types.Part.from_text(text=IO)]
+        if IO.strip():
+            st.session_state["chat_history"].append(
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text=IO)]
+                )
             )
-        )
-        response = client.models.generate_content(
-            model="gemini-2.5-flash", 
-            contents=st.session_state["chat_history"]
-        )
-        st.session_state["chat_history"].append(
-            types.Content(
-                role="model",
-                parts=[types.Part.from_text(text=response.text)]
-            )
-        )
-        st.write("Here is an AI response:")
-        st.write(response.text + """
-
-Scroll back up to the top and type into the text box to continue the Conversation
-Ai may make mistakes.""")
+            
+            try:
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash", 
+                    contents=st.session_state["chat_history"]
+                )
+                
+                # Only save the model response if the API call succeeded!
+                st.session_state["chat_history"].append(
+                    types.Content(
+                        role="model",
+                        parts=[types.Part.from_text(text=response.text)]
+                    )
+                )
+                st.write("Here is an AI response:")
+                st.write(response.text + """
+AI May Make Mistakes Sometimes.""")
+                
+            except Exception as e:
+                st.session_state["chat_history"].pop()
+                st.error("⚠️ The AI engine encountered an issue processing that turn. Please try rephrasing your question!")
+        else:
+            st.warning("Please type a valid question or search term!")
