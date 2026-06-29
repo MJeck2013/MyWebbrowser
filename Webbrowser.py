@@ -151,7 +151,6 @@ if IO:
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
-        # 1. Initialize the history tracking inside the user's tab session if it doesn't exist yet
         if "chat_history" not in st.session_state:
             # We start with your custom system instruction so the AI always remembers its role!
             st.session_state["chat_history"] = [
