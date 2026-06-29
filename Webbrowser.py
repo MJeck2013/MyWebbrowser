@@ -89,27 +89,6 @@ if IO:
                     st.stop()
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
-    elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
-        try:
-            sys.set_int_max_str_digits(99999)
-            math = IO.lower().replace("plus", "+").replace("minus", "-").replace("times", "*").replace("divided by", "/").replace("hello", "hi").replace("hi", "").replace("to the power of", "**").replace("raised to", "**").replace("squared", "**2").replace("cubed", "**3").replace("the", "").replace("solve", "").replace("math", "").replace("do", "").replace("can ", "h").replace("you", "i").replace(".", "").replace("?", "").replace("!", "").replace(" ", "").replace("me", "").replace("for", "").replace("whatis", "").replace("whats", "").replace("what's", "")
-            if "hi" in math:
-                st.write("Yes I can do that for you!")
-                time.sleep(1)
-                math = math.replace("hi", "")
-            elif "a" in math or "b" in math or "c" in math or "d" in math or "e" in math or "f" in math or "g" in math or "h" in math or "i" in math or "j" in math or "k" in math or "l" in math or "m" in math or "n" in math or "o" in math or "p" in math or "q" in math or "r" in math or "s" in math or "t" in math or "u" in math or "v" in math or "w" in math or "x" in math or "y" in math or "z" in math:
-                st.write("You can't do math with letters/I don't know algebra lol")
-            else:
-                try:
-                    answer = eval(math)
-                    st.write(f"{math} = {answer}")
-                except:
-                    st.write("Hey dude you know you cant divide 1 by 0 right?")
-            answer = eval(math)
-            st.write(f"{math} = {answer}")
-            sys.set_int_max_str_digits(4300)
-        except:
-            st.write(f"An Error has been reported in the calculator: {Exception}")
     elif ".s" in IO:
         IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
         response = client.models.generate_content(model="gemini-3-pro", contents=IO)
