@@ -189,4 +189,7 @@ if IO:
             )
         )
         st.write("Here is an AI response:")
-        st.write(response.text)
+        st.write(response.text + """
+
+Scroll back up to the top and type into the text box to continue the Conversation
+Ai may make mistakes.""")
