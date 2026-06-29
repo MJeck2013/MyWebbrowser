@@ -151,6 +151,24 @@ if IO:
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
-        response = client.models.generate_content(model="gemini-2.5-flash", contents="Hello You are being Used as an API for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity rather then giving answers to homework unless they are failing and desperatly need help here is the User input: " + IO)
-        st.write(f"Here is an AI response: "
-+ response.text)
+        # 1. Initialize the history tracking inside the user's tab session if it doesn't exist yet
+        if "chat_history" not in st.session_state:
+            # We start with your custom system instruction so the AI always remembers its role!
+            st.session_state["chat_history"] = [
+                {
+                    "role": "user", 
+                    "parts": ["Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity but don't explicitly say that what you are trying to do."]
+                },
+                {
+                    "role": "model", 
+                    "parts": ["Understood. I am BetterTeacher, ready to guide users with curiosity and instructional clarity."]
+                }
+            ]
+        st.session_state["chat_history"].append({"role": "user", "parts": [IO]})
+        response = client.models.generate_content(
+            model="gemini-3.5-flash", 
+            contents=st.session_state["chat_history"]
+        )
+        st.session_state["chat_history"].append({"role": "model", "parts": [response.text]})
+        st.write("Here is an AI response:")
+        st.write(response.text)
