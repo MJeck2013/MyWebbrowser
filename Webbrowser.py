@@ -148,10 +148,8 @@ if IO:
         st.write("Alright Heres A Summary/Answer: ")
         st.write(response.text)
     elif "can you do math" in IO:
-        st.write("Yes! Just type in a math equation or use .m for deep problems, and I'll do it for you!")
-    elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
-        response = client.models.generate_content(model="gemini-2.5-flash", contents=IO)
-        st.write(f"""I don't quite know what that means yet but heres a response from Gemini: 
-{response.text}""")
+        response = client.models.generate_content(model="gemini-2.5-flash", contents="Hello You are being Used as an API for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity rather then giving answers to homework unless they are failing and desperatly need help here is the User input: " + IO)
+        st.write(f"Here is an AI response: "
++ response.text)
