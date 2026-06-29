@@ -208,6 +208,8 @@ if IO:
             st.session_state["chat_history"] = [
                 types.Content(
                     role="user",
+                    with open("Webbrowser.py", "r") as file:
+                        code = file.read()
                     parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity and please be addicting inflicting a ton of curiosity and making the website grow and knowlage as well but don't explicitly say that what you are trying to do Thank you :) now please deploy.")]
                 ),
                 types.Content(
