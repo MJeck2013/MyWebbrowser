@@ -148,7 +148,6 @@ if IO:
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
     else:
-        # Initialize history if it's missing
         if "chat_history" not in st.session_state:
             st.session_state["chat_history"] = [
                 types.Content(
@@ -174,7 +173,6 @@ if IO:
                     contents=st.session_state["chat_history"]
                 )
                 
-                # Only save the model response if the API call succeeded!
                 st.session_state["chat_history"].append(
                     types.Content(
                         role="model",
@@ -182,12 +180,27 @@ if IO:
                     )
                 )
                 st.write("Here is an AI response:")
-                st.write(response.text + """
-AI May Make Mistakes Sometimes.""")
+                st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
                 
             except Exception as e:
-                st.session_state["chat_history"].pop()
-                st.write(f"Error: {e}")
-                st.error("⚠️ The AI engine encountered an issue processing that turn. Please try rephrasing your question!")
+                # Flash tier limit hit! Automatically shift to the Pro Tier backup
+                try:
+                    st.info("🔄 Routing traffic through the Pro Core Engine...")
+                    response = client.models.generate_content(
+                        model="gemini-2.5-pro", 
+                        contents=st.session_state["chat_history"]
+                    )
+                    
+                    st.session_state["chat_history"].append(
+                        types.Content(
+                            role="model",
+                            parts=[types.Part.from_text(text=response.text)]
+                        )
+                    )
+                    st.write("Here is an AI response (Pro Engine):")
+                    st.write(response.text + "\n\nAI May Make Mistakes Sometimes.")
+                except Exception as pro_error:
+                    # Both tiers are temporarily maxed out
+                    st.write("Thank You for using NoSchool! Both AI Engine tiers are fully exhausted for today. Please try again tomorrow!")
         else:
             st.warning("Please type a valid question or search term!")
