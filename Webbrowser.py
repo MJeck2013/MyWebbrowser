@@ -28,6 +28,16 @@ if not global_state["is_active"]:
     st.stop()
 if global_state["announcement"]:
     st.info(global_state["announcement"])
+try:
+    user_agent = st.context.headers.get("User-Agent", "").lower()
+except AttributeError:
+    user_agent = ""
+
+is_tv = any(tv_word in user_agent for tv_word in ["tv", "smarttv", "appletv", "googletv", "webos", "tizen"])
+if is_tv:
+    with open("TV_Edition.py", "r") as tv_file:
+        exec(tv_file.read())
+    st.stop()
 st.write(f"{current_time}")
 st.title("!No_School!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
