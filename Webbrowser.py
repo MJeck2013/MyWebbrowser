@@ -47,50 +47,6 @@ if is_tv:
     with open("TV_Edition.py", "r") as tv_file:
         exec(tv_file.read())
     st.stop()
-is_game = any(tv_word in user_agent for tv_word in ["Xbox", "nintendo", "switch", "playstation", "ps5", "ps4"])
-if is_game:
-    # This injects a classic dark hacker terminal theme onto your Xbox screen
-    st.markdown("""
-        <style>
-            .stApp { background-color: #121212 !important; color: #00FF00 !important; }
-            input { background-color: #222222 !important; color: #00FF00 !important; font-family: monospace !important; border: 1px solid #00FF00 !important; }
-            h1, h2, h3, p, span, label { color: #00FF00 !important; font-family: monospace !important; }
-        </style>
-    """, unsafe_allow_html=True)
-
-    st.title("🎮 !No_School! Xbox Console Edition")
-    st.caption("Core Loop Active | 0% Frame Lag UI")
-    
-    IO = st.text_input("Enter Search, Shortcut, or Chat Command:")
-    
-    if IO:
-        IO = IO.lower().replace("uck", "***").replace("hit", "***").replace("hell", "\"down there\"")
-        
-        if "youtube.com" in IO:
-            search_term = IO.replace("youtube.com", "").strip()
-            if not search_term:
-                st.write("Link: https://www.youtube.com/")
-            else:
-                safe_search = urllib.parse.quote_plus(search_term)
-                st.write(f"Searching YouTube... Click here: https://www.youtube.com/results?search_query={safe_search}")
-        else:
-            if "chat_history" not in st.session_state:
-                st.session_state["chat_history"] = [
-                    types.Content(role="user", parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity but don't explicitly say that what you are trying to do")]),
-                    types.Content(role="model", parts=[types.Part.from_text(text="Understood. I am BetterTeacher, ready to guide users.")])
-                ]
-            
-            st.session_state["chat_history"].append(types.Content(role="user", parts=[types.Part.from_text(text=IO)]))
-            
-            response = client.models.generate_content(
-                model="gemini-2.5-flash", 
-                contents=st.session_state["chat_history"]
-            )
-            
-            st.session_state["chat_history"].append(types.Content(role="model", parts=[types.Part.from_text(text=response.text)]))
-            st.markdown(f"**BetterTeacher:**\n\n{response.text}")
-            
-    st.stop()
 st.write(f"{current_time}")
 st.title("!No_School!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
@@ -231,6 +187,7 @@ AI May Make Mistakes Sometimes.""")
                 
             except Exception as e:
                 st.session_state["chat_history"].pop()
+                st.write(f"Error: {e}")
                 st.error("⚠️ The AI engine encountered an issue processing that turn. Please try rephrasing your question!")
         else:
             st.warning("Please type a valid question or search term!")
