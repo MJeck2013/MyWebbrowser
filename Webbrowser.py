@@ -47,36 +47,41 @@ if is_tv:
     with open("TV_Edition.py", "r") as tv_file:
         exec(tv_file.read())
     st.stop()
-is_game = any(tv_word in user_agent for tv_word in ["xbox", "nintendo", "switch", "playstation", "ps5", "ps4"])
+is_game = any(tv_word in user_agent for tv_word in ["Xbox", "nintendo", "switch", "playstation", "ps5", "ps4"])
 if is_game:
+    # This injects a classic dark hacker terminal theme onto your Xbox screen
     st.markdown("""
         <style>
-            .stApp { background-color: #121212; color: #00FF00; }
-            input { background-color: #222222 !important; color: #00FF00 !important; font-family: monospace; }
+            .stApp { background-color: #121212 !important; color: #00FF00 !important; }
+            input { background-color: #222222 !important; color: #00FF00 !important; font-family: monospace !important; border: 1px solid #00FF00 !important; }
+            h1, h2, h3, p, span, label { color: #00FF00 !important; font-family: monospace !important; }
         </style>
     """, unsafe_allow_html=True)
 
-    st.title("🎮 !No_School! Xbox Edition")
-    st.caption("Optimized Core Loop | 0% Frame Lag Architecture")
+    st.title("🎮 !No_School! Xbox Console Edition")
+    st.caption("Core Loop Active | 0% Frame Lag UI")
     
-    IO = st.text_input("Enter Search, Shortcut, or Chat Command:").lower()
+    IO = st.text_input("Enter Search, Shortcut, or Chat Command:")
     
     if IO:
-        IO = IO.replace("uck", "***").replace("hit", "***").replace("hell", "\"down there\"")
+        IO = IO.lower().replace("uck", "***").replace("hit", "***").replace("hell", "\"down there\"")
         
         if "youtube.com" in IO:
-            st.success("Routing to Video Player...")
-            # Your fast YouTube redirect logic here
+            search_term = IO.replace("youtube.com", "").strip()
+            if not search_term:
+                st.write("Link: https://www.youtube.com/")
+            else:
+                safe_search = urllib.parse.quote_plus(search_term)
+                st.write(f"Searching YouTube... Click here: https://www.youtube.com/results?search_query={safe_search}")
         else:
             if "chat_history" not in st.session_state:
                 st.session_state["chat_history"] = [
-                    types.Content(role="user", parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher...")]),
-                    types.Content(role="model", parts=[types.Part.from_text(text="Understood.")])
+                    types.Content(role="user", parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity but don't explicitly say that what you are trying to do")]),
+                    types.Content(role="model", parts=[types.Part.from_text(text="Understood. I am BetterTeacher, ready to guide users.")])
                 ]
             
             st.session_state["chat_history"].append(types.Content(role="user", parts=[types.Part.from_text(text=IO)]))
             
-            # This calls the fast flash engine instantly over the cloud!
             response = client.models.generate_content(
                 model="gemini-2.5-flash", 
                 contents=st.session_state["chat_history"]
@@ -84,6 +89,7 @@ if is_game:
             
             st.session_state["chat_history"].append(types.Content(role="model", parts=[types.Part.from_text(text=response.text)]))
             st.markdown(f"**BetterTeacher:**\n\n{response.text}")
+            
     st.stop()
 st.write(f"{current_time}")
 st.title("!No_School!")
