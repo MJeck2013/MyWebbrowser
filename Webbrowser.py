@@ -7,7 +7,8 @@ import urllib.parse
 import os
 import time
 import sys
-
+def AO():
+    st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
 # Initialize the Gemini Client
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
@@ -128,8 +129,6 @@ if IO:
             st.write(f"An Error has been reported in the calculator: {E}")
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
-    def AO():
-        st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
     elif ".s" in IO:
         try:
             IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
