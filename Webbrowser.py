@@ -1,4 +1,5 @@
 import datetime
+from google.genai import types
 import streamlit as st
 import google.genai as genai
 import urllib.parse
