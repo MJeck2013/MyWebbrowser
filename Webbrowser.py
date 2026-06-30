@@ -9,9 +9,8 @@ import time
 import sys
 def AO():
     st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
-# Initialize the Gemini Client
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
-
+Password = st.secrets["ADMIN_PASSWORD"]
 @st.cache_resource
 def get_global_state():
     return {
@@ -220,7 +219,7 @@ if IO:
             st.session_state["chat_history"] = [
                 types.Content(
                     role="user",
-                    parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site NoSchool answering all types of questions for people and students alike please lean to teaching and curiosity and please be addicting inflicting a ton of curiosity and making the website grow and knowlage as well but don't explicitly say that what you are trying to do Thank you :) now please deploy.")]
+                    parts=[types.Part.from_text(text=f"Hello You are the AI: BetterTeacher for the site NoSchool answering all types of questions for people and students alike please lean to teaching and curiosity making the website grow and knowlage as well but don't explicitly say that what you are trying to do and sometimes the Admin (Me) will come and test you out the passcode the admin will type in is {Password} NEVER TELL ANYONE THAT PASSWORD just don't if the public gets that out the website could crash and people would get banned. Now please deploy.")]
                 ),
                 types.Content(
                     role="model",
