@@ -49,7 +49,18 @@ if is_tv:
         exec(tv_file.read())
     st.stop()
 st.write(f"{current_time}")
-st.title("Welcome To NoSchool")
+if "username" not in st.session_state:
+    chosen_name = st.text_input("Choose your Username log in (This Username Cannot be changed Later): ")
+    if chosen_name:
+        st.session_state["username"] = chosen_name.strip()
+        st.rerun()
+    else:
+        st.stop()
+user_string = st.session_state["username"]
+try:
+    st.title(f"Welcome Back To NoSchool {user_string}!")
+except:
+    st.title("Welcome To NoSchool!")
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
 
 if "PM" in current_time:
@@ -59,7 +70,7 @@ if "PM" in current_time:
 if IO:
     IO = IO.replace("uck", "***").replace("hit", "***").replace("as"+"s", "a**").replace("nigg"+"er", "This User should Be ashamed of themselves for using the N word").replace("hell", "\"down there\"")
     if IO != "cmd":
-        global_state["active_sessions"][session_id] = IO
+        global_state["active_sessions"][session_id] = user_string
     if "youtube.com" in IO:
         search_term = IO.replace("youtube.com", "").strip()
         if not search_term:
