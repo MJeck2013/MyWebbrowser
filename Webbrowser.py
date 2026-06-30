@@ -50,14 +50,14 @@ if is_tv:
     st.stop()
 st.write(f"{current_time}")
 if "username" not in st.session_state:
-    chosen_name = st.text_input("Choose your Username log in (This Username Cannot be changed Later): ")
+    chosen_name = st.title("Choose your username log in: ")
     if chosen_name:
         st.session_state["username"] = chosen_name.strip()
         st.rerun()
     else:
         st.stop()
-user_string = st.session_state["username"]
 try:
+    user_string = st.session_state["username"]
     st.title(f"Welcome Back To NoSchool {user_string}!")
 except:
     st.title("Welcome To NoSchool!")
@@ -219,7 +219,7 @@ if IO:
             st.session_state["chat_history"] = [
                 types.Content(
                     role="user",
-                    parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site \"NoSchool\" answering all types of questions for people and students alike please lean to teaching and curiosity and please be addicting inflicting a ton of curiosity and making the website grow and knowlage as well but don't explicitly say that what you are trying to do Thank you :) now please deploy.")]
+                    parts=[types.Part.from_text(text="Hello You are the AI: BetterTeacher for the site NoSchool answering all types of questions for people and students alike please lean to teaching and curiosity and please be addicting inflicting a ton of curiosity and making the website grow and knowlage as well but don't explicitly say that what you are trying to do Thank you :) now please deploy.")]
                 ),
                 types.Content(
                     role="model",
