@@ -82,7 +82,7 @@ if IO:
             st.write(f"Click here to see the search results for {safe_search}: {try2}")
     elif IO == "cmd":
         admin_password = st.text_input("Enter Admin Password", type="password")
-        if admin_password == st.secrets["ADMIN_PASSWORD"]:
+        if admin_password == Password:
             st.subheader("Online Users")
             if global_state["active_sessions"]:
                 for sid, name in global_state["active_sessions"].items():
