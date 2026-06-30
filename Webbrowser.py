@@ -50,7 +50,8 @@ if is_tv:
     st.stop()
 st.write(f"{current_time}")
 if "username" not in st.session_state:
-    chosen_name = st.title("Choose your username log in: ")
+    st.title("Choose your Username Log in.")
+    chosen_name = st.text_input("")
     if chosen_name:
         st.session_state["username"] = chosen_name.strip()
         st.rerun()
