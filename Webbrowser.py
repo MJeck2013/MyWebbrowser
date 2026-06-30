@@ -9,7 +9,19 @@ import time
 import sys
 def AO():
     st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+AVAILABLE_KEYS = [
+    st.secrets.get("GEMINI_API_KEY"),
+    st.secrets.get("GEMINI_API_KEY_2")
+]
+AVAILABLE_KEYS = [k for k in AVAILABLE_KEYS if k]
+if "key_index" not in st.session_state:
+    st.session_state["key_index"] = 0
+def get_current_client():
+    idx = st.session_state["key_index"]
+    if idx >= len(AVAILABLE_KEYS):
+        return genai.Client(api_key=st.secrets.get("GEMINI_API_KEY"))
+    return genai.Client(api_key=AVAILABLE_KEYS[idx])
+client = get_current_client()
 Password = st.secrets["ADMIN_PASSWORD"]
 @st.cache_resource
 def get_global_state():
@@ -48,9 +60,12 @@ if is_tv:
         exec(tv_file.read())
     st.stop()
 st.write(f"{current_time}")
-if "username" not in st.session_state:
-    st.title("Choose your Username Log in.")
-    chosen_name = st.text_input("")
+if "username" in st.session_state:
+    user_string = st.session_state["username"]
+else:
+    st.title("Welcome to NoSchool!")
+    chosen_name = st.text_input("Choose your username to log in:")
+    
     if chosen_name:
         st.session_state["username"] = chosen_name.strip()
         st.rerun()
