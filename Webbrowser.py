@@ -187,7 +187,7 @@ if IO:
             st.query_params.clear()
     elif IO == "codelab":
         # 1. Load the brand new HTML dashboard
-        with open("html/code_lab.html", "r") as file:
+        with open("html/website_creator.html", "r") as file:
             html_content = file.read()
         components.html(html_content, height=650)
         
