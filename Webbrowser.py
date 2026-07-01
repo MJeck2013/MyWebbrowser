@@ -173,7 +173,7 @@ if IO:
     elif IO == "appcreator":
         with open("html/website_creator.html", "r") as file:
             html_content = file.read()
-        components.html(html_content, height=500)
+        components.html(html_content, height=600)
         params = st.query_params
         if "new_app_name" in params and "new_app_desc" in params:
             app_name = params["new_app_name"]
@@ -184,6 +184,33 @@ if IO:
             with open("submitted_apps.txt", "a") as file:
                 file.write(f"App Name: {app_name}\nDescription: {app_desc} Premium Number: {app_prNo}\n---\n")
             st.success("")
+            st.query_params.clear()
+    elif IO == "codelab":
+        # 1. Load the brand new HTML dashboard
+        with open("html/code_lab.html", "r") as file:
+            html_content = file.read()
+        components.html(html_content, height=650)
+        
+        # 2. Check if the user clicked "Ask AI Tutor"
+        params = st.query_params
+        if "codelab_lang" in params and "codelab_src" in params:
+            lang = params["codelab_lang"]
+            source_code = params["codelab_src"]
+            
+            # Construct a structured prompt for the AI sub-agent tutor
+            ai_prompt = f"You are CodeLab Tutor. Analyze this {lang} source code. Explain what it does, check for syntax errors, and teach the user how to optimize it:\n\n{source_code}"
+            
+            st.info(f"🧠 CodeLab Engine analyzing {lang.toUpperCase()} script...")
+            
+            try:
+                # Use your existing API client setup to generate content
+                response = client.models.generate_content(model="gemini-2.5-flash", contents=ai_prompt)
+                st.write("### 🤖 AI Tutor Feedback:")
+                st.write(response.text)
+            except Exception as e:
+                st.error(f"Could not connect to Tutor subagent: {e}")
+                
+            # Clear parameters to reset state smoothly
             st.query_params.clear()
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
