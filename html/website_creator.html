@@ -46,6 +46,8 @@
   <h4>Tell us your Premium Number! (Optional)</h4>
   <input type="text" id="prno" placeholder="Premium Number Example: Pr12345">
   
+  <p id="message_box"></p>
+  
   <!-- button -->
   <br>
   <button onclick="processApp()">Submit Idea</button>
@@ -60,13 +62,15 @@
       
       // Check if the required boxes are blank
       if (name === "" || description === "") {
-        alert("Please fill out both the Name and Description boxes first!");
+        let targetBox = document.getElementById("message_box");
+        targetBox.innerText = "Please fill out all boxes before submission!";
+        targetBox.style.color = "#FF0000";      
+        targetBox.style.fontWeight = "bold";    
+        targetBox.style.fontSize = "18px";
       } else {
-        // 2. Clean up characters for the URL link
         const cleanprNo = encodeURIComponent(prno);
         const cleanName = encodeURIComponent(name);
         const cleanDesc = encodeURIComponent(description);
-        // 3. Send them to the URL using the correct distinct keys
         window.parent.location.search = `?new_app_name=${cleanName}&new_app_desc=${cleanDesc}&new_prNo=${cleanprNo}`;
       }
     }
