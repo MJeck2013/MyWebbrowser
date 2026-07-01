@@ -60,14 +60,20 @@ if is_tv:
         exec(tv_file.read())
     st.stop()
 st.write(f"{current_time}")
+url_params = st.query_params
+if "user" in url_params and "username" not in st.session_state:
+    st.session_state["username"] = url_params["user"]
 if "username" in st.session_state:
     user_string = st.session_state["username"]
 else:
     st.title("Welcome to NoSchool!")
-    chosen_name = st.text_input("Choose your username to log in:")
+    chosen_name = st.text_input("Choose your username to Have (Note This will never be changed):")
     
     if chosen_name:
-        st.session_state["username"] = chosen_name.strip()
+        cleaned_name = chosen_name.strip()
+        st.session_state["username"] = cleaned_name
+        # Save it to the URL bar so a reload won't break it
+        st.query_params["user"] = cleaned_name
         st.rerun()
     else:
         st.stop()
