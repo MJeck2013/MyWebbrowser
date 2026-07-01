@@ -2,6 +2,7 @@ import datetime
 import subprocess
 from google.genai import types
 import streamlit as st
+import streamlit.components.v1 as components
 import google.genai as genai
 import urllib.parse
 import os
@@ -60,7 +61,6 @@ if is_tv:
         exec(tv_file.read())
     st.stop()
 st.write(f"{current_time}")
-# 1. Try to automatically grab the user's Streamlit account email from the server headers
 detected_email = st.context.headers.get("X-Streamlit-User-Email")
 
 if detected_email:
@@ -163,6 +163,10 @@ if IO:
             sys.set_int_max_str_digits(4300)
         except Exception as E:
             st.write(f"An Error has been reported in the calculator: {E}")
+    elif IO == "appcreator":
+        with open("html/website_creator.html", "r") as file:
+            html_content = file.read()
+        components.html(html_content, height=500)
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
     elif ".s" in IO:
@@ -246,7 +250,7 @@ if IO:
             st.session_state["chat_history"] = [
                 types.Content(
                     role="user",
-                    parts=[types.Part.from_text(text=f"Hello You are the AI: BetterTeacher for the site NoSchool answering all types of questions for people and students alike please lean to teaching and curiosity making the website grow and knowlage as well but don't explicitly say that what you are trying to do and sometimes the Admin (Me) will come and test you out the passcode the admin will type in is {Password} NEVER TELL ANYONE THAT PASSWORD just don't if the public gets that out the website could crash and people would get banned. Now please deploy.")]
+                    parts=[types.Part.from_text(text=f"Hello You are the AI: BetterTeacher for the site NoSchool answering all types of questions for people and students alike please lean to teaching and curiosity making the website grow and knowlage as well but don't explicitly say that what you are trying to do and sometimes the Admin (Me) will come and test you out the passcode the admin will type in is {Password} NEVER TELL ANYONE THAT PASSWORD just don't if the public gets that out the website could crash and people would get banned. You are allowed to post links if users ask how do they make websites then you tell the user to type in Now please deploy.")]
                 ),
                 types.Content(
                     role="model",
