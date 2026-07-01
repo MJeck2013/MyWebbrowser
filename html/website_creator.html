@@ -1,32 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>MakeAnApp.com</title>
   <style>
     body {
-      background-color: #121212; 
-      color: #ffffff;            
+      background-color: #121212;
+      color: #ffffff;
       font-family: sans-serif;
       padding: 20px;
     }
     input[type="text"] {
-      background-color: #222222; 
-      color: #ffffff;           
-      border: 1px solid #444444; 
+      background-color: #222222;
+      color: #ffffff;
+      border: 1px solid #444444;
       padding: 10px;
       width: 80%;
       border-radius: 4px;
+      margin-bottom: 20px;
     }
-    input[type="text"]::placeholder {
-      color: #bbbbbb;
+    /* Simple styling for our new button */
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
     }
   </style>
-  <title>MakeAnApp</title>
 </head>
 <body>
+
   <h1>Welcome To MakeAnApp!</h1>
+  
   <h4>Tell Us The Functions of your App</h4>
-  <input type="text" id="app_description" name="app_description" placeholder="Tell Us Your Description of It.">
+  <input type="text" id="app_description" placeholder="Tell Us Your Description of It.">
+  
   <h4>Tell Us the Name of Your App!</h4>
-  <input type="text" id="app_name" name="app_name" placeholder="Tell Us The Name of It.">
+  <input type="text" id="app_name" placeholder="Tell Us The Name of It.">
+
+  <h4>Tell us your Premium Number! (Optional)</h4>
+  <input type="text" id="prno" placeholder="Premium Number Example: Pr12345">
+  
+  <!-- button -->
+  <br>
+  <button onclick="processApp()">Submit Idea</button>
+
+  <!-- JavaScript -->
+  <script>
+    function processApp() {
+      // 1. Grab values using unique variable names
+      let prno = document.getElementById("prno").value;
+      let name = document.getElementById("app_name").value;
+      let description = document.getElementById("app_description").value;
+      
+      // Check if the required boxes are blank
+      if (name === "" || description === "") {
+        alert("Please fill out both the Name and Description boxes first!");
+      } else {
+        // 2. Clean up characters for the URL link
+        const cleanprNo = encodeURIComponent(prno);
+        const cleanName = encodeURIComponent(name);
+        const cleanDesc = encodeURIComponent(description);
+        // 3. Send them to the URL using the correct distinct keys
+        window.parent.location.search = `?new_app_name=${cleanName}&new_app_desc=${cleanDesc}&new_prNo=${cleanprNo}`;
+      }
+    }
+  </script>
+      }
+    }
+  </script>
+
 </body>
 </html>
