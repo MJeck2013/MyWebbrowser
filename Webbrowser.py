@@ -8,22 +8,28 @@ import urllib.parse
 import os
 import time
 import sys
+
 def AO():
     st.write("Thank you for Browsing using NoSchool Please use again Tomorrow :)")
+
 AVAILABLE_KEYS = [
     st.secrets.get("GEMINI_API_KEY"),
     st.secrets.get("GEMINI_API_KEY_2")
 ]
 AVAILABLE_KEYS = [k for k in AVAILABLE_KEYS if k]
+
 if "key_index" not in st.session_state:
     st.session_state["key_index"] = 0
+
 def get_current_client():
     idx = st.session_state["key_index"]
     if idx >= len(AVAILABLE_KEYS):
         return genai.Client(api_key=st.secrets.get("GEMINI_API_KEY"))
     return genai.Client(api_key=AVAILABLE_KEYS[idx])
+
 client = get_current_client()
 Password = st.secrets["ADMIN_PASSWORD"]
+
 @st.cache_resource
 def get_global_state():
     return {
@@ -54,12 +60,14 @@ try:
     user_agent = st.context.headers.get("User-Agent", "").lower()
 except AttributeError:
     user_agent = ""
+
 is_tv = any(tv_word in user_agent for tv_word in ["tv", "smarttv", "appletv", "googletv", "webos", "tizen", "roku", "android", "samsung", "linux"])
 if is_tv:
     os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
     with open("TV_Edition.py", "r") as tv_file:
         exec(tv_file.read())
     st.stop()
+
 st.write(f"{current_time}")
 detected_email = st.context.headers.get("X-Streamlit-User-Email")
 
@@ -76,28 +84,25 @@ else:
         st.rerun()
     else:
         st.stop()
-    if chosen_name:
-        cleaned_name = chosen_name.strip()
-        st.session_state["username"] = cleaned_name
-        st.query_params["user"] = cleaned_name
-        st.rerun()
-    else:
-        st.stop()
+
 try:
     user_string = st.session_state["username"]
     st.title(f"Welcome Back To NoSchool {user_string}!")
 except:
     st.title("Welcome To NoSchool!")
+
 IO = st.text_input("The Official Browser Of: Michael Johnathan Ecklund (A Student Who Hates being taught by Karens)").lower()
 
 if "PM" in current_time:
     current_tim = int(current_time.replace("PM", "").replace(":", "").strip())
     if current_tim > 159 and current_tim < 301:
         st.write("⚠️ Warning: System Updates may occur.")
+
 if IO:
     IO = IO.replace("uck", "***").replace("hit", "***").replace("as"+"s", "a**").replace("nigg"+"er", "This User should Be ashamed of themselves for using the N word").replace("hell", "\"down there\"")
     if IO != "cmd":
         global_state["active_sessions"][session_id] = user_string
+        
     if "youtube.com" in IO:
         search_term = IO.replace("youtube.com", "").strip()
         if not search_term:
@@ -107,6 +112,7 @@ if IO:
             try2 = f"https://www.youtube.com/results?search_query={safe_search}"
             st.write(f"Searching YouTube for: *{search_term}*")
             st.write(f"Click here to see the search results for {safe_search}: {try2}")
+            
     elif IO == "cmd":
         admin_password = st.text_input("Enter Admin Password", type="password")
         if admin_password == Password:
@@ -117,6 +123,7 @@ if IO:
                     st.text(f"ID: {sid[:6]}... | Input: {name} | Status: {status}")
             else:
                 st.text("No other users active right now.")
+                
             cmd = st.text_input("What's The Command Johnathan?")
             if cmd:
                 if cmd.startswith("freeze "):
@@ -145,12 +152,16 @@ if IO:
                     st.warning("Closing your local session...")
                     st.stop()
                 elif cmd == "apps":
-                    with open("submitted_apps.txt", "r") as file:
-                        content = file.read()
-                    if not content:
-                        print("No Apps have Been Made Yet...")
-                    else:
-                        print(content)
+                    try:
+                        with open("submitted_apps.txt", "r") as file:
+                            content = file.read()
+                        if not content.strip():
+                            st.text("No Apps have Been Made Yet...")
+                        else:
+                            st.text(content)
+                    except FileNotFoundError:
+                        st.text("No Apps have Been Made Yet... (Submission file hasn't been created)")
+                        
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
             sys.set_int_max_str_digits(99999)
@@ -170,6 +181,7 @@ if IO:
             sys.set_int_max_str_digits(4300)
         except Exception as E:
             st.write(f"An Error has been reported in the calculator: {E}")
+            
     elif IO == "appcreator":
         with open("html/website_creator.html", "r") as file:
             html_content = file.read()
@@ -178,42 +190,43 @@ if IO:
         if "new_app_name" in params and "new_app_desc" in params:
             app_name = params["new_app_name"]
             app_desc = params["new_app_desc"]
-            app_prNo = params["new_prNo"]
+            app_prNo = params.get("new_prNo", "").strip()
             if not app_prNo:
                 app_prNo = "None"
             with open("submitted_apps.txt", "a") as file:
-                file.write(f"App Name: {app_name}\nDescription: {app_desc} Premium Number: {app_prNo}\n---\n")
-            st.success("")
+                file.write(f"App Name: {app_name}\nDescription: {app_desc}\nPremium Number: {app_prNo}\n---\n")
+            st.success(f"🎉 Saved idea for '{app_name}' safely!")
             st.query_params.clear()
+            
     elif IO == "codelab":
-        # 1. Load the brand new HTML dashboard
-        with open("html/code_lab.html", "r") as file:
-            html_content = file.read()
-        components.html(html_content, height=650)
-        
-        # 2. Check if the user clicked "Ask AI Tutor"
+        try:
+            with open("html/code_lab.html", "r") as file:
+                html_content = file.read()
+            components.html(html_content, height=650)
+        except FileNotFoundError:
+            st.error("⚠️ The CodeLab workspace file (html/code_lab.html) hasn't been created on GitHub yet!")
+            st.stop()
+            
         params = st.query_params
         if "codelab_lang" in params and "codelab_src" in params:
             lang = params["codelab_lang"]
             source_code = params["codelab_src"]
             
-            # Construct a structured prompt for the AI sub-agent tutor
             ai_prompt = f"You are CodeLab Tutor. Analyze this {lang} source code. Explain what it does, check for syntax errors, and teach the user how to optimize it:\n\n{source_code}"
-            
-            st.info(f"🧠 CodeLab Engine analyzing {lang.toUpperCase()} script...")
+            st.info(f"🧠 CodeLab Engine analyzing {lang.upper()} script...")
             
             try:
-                # Use your existing API client setup to generate content
                 response = client.models.generate_content(model="gemini-2.5-flash", contents=ai_prompt)
                 st.write("### 🤖 AI Tutor Feedback:")
                 st.write(response.text)
             except Exception as e:
                 st.error(f"Could not connect to Tutor subagent: {e}")
                 
-            # Clear parameters to reset state smoothly
             st.query_params.clear()
+            
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
+        
     elif ".s" in IO:
         try:
             IO = "Answer this Science Question For A User Please: " + IO.replace(".s", "")
@@ -288,8 +301,10 @@ if IO:
             st.image(image_response.generated_images[0].image_bytes, caption=prompt)
         except:
             AO()
+            
     elif "can you do math" in IO:
         st.write("Yes! I can just type in the math Equation and I'll do it for you!")
+        
     else:
         if "chat_history" not in st.session_state:
             st.session_state["chat_history"] = [
@@ -315,7 +330,6 @@ if IO:
                     model="gemini-2.5-flash", 
                     contents=st.session_state["chat_history"]
                 )
-                
                 st.session_state["chat_history"].append(
                     types.Content(
                         role="model",
@@ -331,7 +345,6 @@ if IO:
                         model="gemini-2.5-pro", 
                         contents=st.session_state["chat_history"]
                     )
-                    
                     st.session_state["chat_history"].append(
                         types.Content(
                             role="model",
@@ -346,7 +359,6 @@ if IO:
                             model="gemini-1.5-pro", 
                             contents=st.session_state["chat_history"]
                         )
-                        
                         st.session_state["chat_history"].append(
                             types.Content(
                                 role="model",
@@ -361,7 +373,6 @@ if IO:
                                 model="gemini-1.5-flash", 
                                 contents=st.session_state["chat_history"]
                             )
-                            
                             st.session_state["chat_history"].append(
                                 types.Content(
                                     role="model",
