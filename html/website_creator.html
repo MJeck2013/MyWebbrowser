@@ -55,12 +55,12 @@
   <!-- JavaScript -->
   <script>
     function processApp() {
-      // 1. Grab values using unique variable names
+      // 1. Fixed the IDs so they match your inputs perfectly!
       let prno = document.getElementById("prno").value;
       let name = document.getElementById("app_name").value;
       let description = document.getElementById("app_description").value;
       
-      // Check if the required boxes are blank
+      // 2. Check if the required boxes are empty strings
       if (name === "" || description === "") {
         let targetBox = document.getElementById("message_box");
         targetBox.innerText = "Please fill out all boxes before submission!";
@@ -68,9 +68,18 @@
         targetBox.style.fontWeight = "bold";    
         targetBox.style.fontSize = "18px";
       } else {
+        // 3. Clear out the error message if they fixed it
+        let targetBox = document.getElementById("message_box");
+        if (targetBox) {
+          targetBox.innerText = "";
+        }
+
+        // 4. Clean up characters for the URL link
         const cleanprNo = encodeURIComponent(prno);
         const cleanName = encodeURIComponent(name);
         const cleanDesc = encodeURIComponent(description);
+        
+        // 5. Send them to the URL using the correct distinct keys
         window.parent.location.search = `?new_app_name=${cleanName}&new_app_desc=${cleanDesc}&new_prNo=${cleanprNo}`;
       }
     }
