@@ -144,6 +144,13 @@ if IO:
                 elif cmd == "exit(s)":
                     st.warning("Closing your local session...")
                     st.stop()
+                elif cmd == "apps":
+                    with open("submitted_apps.txt", "a") as file:
+                        content = file.read()
+                    if not content:
+                        print("No Apps have Been Made Yet...")
+                    else:
+                        print(content)
     elif "+" in IO or "plus" in IO or "-" in IO or "minus" in IO or "*" in IO or "times" in IO or "divided by" in IO or "/" in IO or "to the power of" in IO or "raised to" in IO or "cubed" in IO or "sqaured" in IO:
         try:
             sys.set_int_max_str_digits(99999)
@@ -167,6 +174,17 @@ if IO:
         with open("html/website_creator.html", "r") as file:
             html_content = file.read()
         components.html(html_content, height=500)
+        params = st.query_params
+        if "new_app_name" in params and "new_app_desc" in params:
+            app_name = params["new_app_name"]
+            app_desc = params["new_app_desc"]
+            app_prNo = params["new_prNo"]
+            if not app_prNo:
+                app_prNo = "None"
+            with open("submitted_apps.txt", "a") as file:
+                file.write(f"App Name: {app_name}\nDescription: {app_desc} Premium Number: {app_prNo}\n---\n")
+            st.success("")
+            st.query_params.clear()
     elif IO == "show.credits":
         st.write("Credits: Gemini was used to help in the making of this website, Gemini is sometimes used to make responses, So overall Gemini is better then ChatGPT")
     elif ".s" in IO:
