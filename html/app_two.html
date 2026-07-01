@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NoSchool CodeLab</title>
+  <style>
+    body {
+      background-color: #0f0f1a;
+      color: #ffffff;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+    .workspace {
+      display: flex;
+      gap: 20px;
+    }
+    .editor-section, .ai-section {
+      flex: 1;
+      background-color: #161625;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #2d2d44;
+    }
+    select, button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+    select {
+      background-color: #2a2a40;
+    }
+    textarea {
+      width: 95%;
+      height: 300px;
+      background-color: #05050d;
+      color: #00ffcc;
+      border: 1px solid #3b3b5c;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      border-radius: 6px;
+      resize: none;
+    }
+    .output-box {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 4px;
+      min-height: 80px;
+      margin-top: 15px;
+      border-left: 4px solid #4CAF50;
+      white-space: pre-wrap;
+    }
+    #ai_response {
+      color: #ff9f43;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚀 NoSchool CodeLab</h1>
+  <p>Choose your language, write scripts, and build your engineering skills!</p>
+
+  <div class="workspace">
+    <!-- LEFT SIDE: Code Input & Execution -->
+    <div class="editor-section">
+      <label for="lang">Language: </label>
+      <select id="lang" onchange="updatePlaceholder()">
+        <option value="python">Python 🐍</option>
+        <option value="html">HTML 🌐</option>
+        <option value="cpp">C++ ⚙️</option>
+        <option value="java">Java ☕</option>
+      </select>
+      
+      <textarea id="code_input" placeholder='print("Hello, Python World!")'></textarea>
+      <br>
+      <button onclick="runCode()">⚡ Execute Script</button>
+      <button onclick="askAI()">🧠 Ask AI Tutor</button>
+      
+      <h4>Console Output:</h4>
+      <div id="console_output" class="output-box">Program terminal ready...</div>
+    </div>
+
+    <!-- RIGHT SIDE: Integrated AI Tutor Dashboard -->
+    <div class="ai-section">
+      <h3>🤖 CodeLab Assistant</h3>
+      <p>Click "Ask AI Tutor" to analyze your code block and check for errors or learn structural concepts.</p>
+      <div id="ai_response" class="output-box">Waiting for code feedback...</div>
+    </div>
+  </div>
+
+  <!-- JavaScript Brain -->
+  <script>
+    function updatePlaceholder() {
+      let lang = document.getElementById("lang").value;
+      let area = document.getElementById("code_input");
+      if(lang === "python") area.value = 'print("Hello from Python!")';
+      if(lang === "html") area.value = '<h1>Hello World!</h1>\n<p>This is live HTML rendering</p>';
+      if(lang === "cpp") area.value = '#include <iostream>\nint main() {\n    std::cout << "Hello C++";\n    return 0;\n}';
+      if(lang === "java") area.value = 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello Java");\n    }\n}';
+    }
+
+    function runCode() {
+      let lang = document.getElementById("lang").value;
+      let code = document.getElementById("code_input").value;
+      let terminal = document.getElementById("console_output");
+      
+      if (lang === "html") {
+        terminal.innerHTML = code; // Actually injects and runs the HTML live!
+      } else {
+        terminal.innerText = `[Simulating execution of local ${lang.toUpperCase()} environment...]\n\nOutput:\n`;
+        if (lang === "python") terminal.innerText += "Hello from Python!";
+        if (lang === "cpp") terminal.innerText += "Hello C++";
+        if (lang === "java") terminal.innerText += "Hello Java";
+      }
+    }
+
+    function askAI() {
+      let lang = document.getElementById("lang").value;
+      let code = document.getElementById("code_input").value;
+      
+      // Clean up string parameters to pass safely across the Streamlit URL bridge!
+      const cleanLang = encodeURIComponent(lang);
+      const cleanCode = encodeURIComponent(code);
+      
+      window.parent.location.search = `?codelab_lang=${cleanLang}&codelab_src=${cleanCode}`;
+    }
+  </script>
+
+</body>
+</html>
