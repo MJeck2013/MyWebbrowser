@@ -145,7 +145,7 @@ if IO:
                     st.warning("Closing your local session...")
                     st.stop()
                 elif cmd == "apps":
-                    with open("submitted_apps.txt", "a") as file:
+                    with open("submitted_apps.txt", "r") as file:
                         content = file.read()
                     if not content:
                         print("No Apps have Been Made Yet...")
