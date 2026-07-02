@@ -183,9 +183,15 @@ if IO:
             st.write(f"An Error has been reported in the calculator: {E}")
             
     elif IO == "appcreator":
+        # Clear codelab parameters if they are lingering around
+        if "codelab_lang" in st.query_params or "codelab_src" in st.query_params:
+            st.query_params.clear()
+            st.rerun()
+            
         with open("html/website_creator.html", "r") as file:
             html_content = file.read()
         components.html(html_content, height=600)
+        
         params = st.query_params
         if "new_app_name" in params and "new_app_desc" in params:
             app_name = params["new_app_name"]
@@ -198,6 +204,35 @@ if IO:
             st.success(f"🎉 Saved idea for '{app_name}' safely!")
             st.query_params.clear()
             
+    elif IO == "codelab":
+        if "new_app_name" in st.query_params or "new_app_desc" in st.query_params:
+            st.query_params.clear()
+            st.rerun()
+
+        try:
+            with open("html/code_lab.html", "r") as file:
+                html_content = file.read()
+            components.html(html_content, height=650)
+        except FileNotFoundError:
+            st.error("⚠️ The CodeLab workspace file (html/code_lab.html) hasn't been created on GitHub yet!")
+            st.stop()
+            
+        params = st.query_params
+        if "codelab_lang" in params and "codelab_src" in params:
+            lang = params["codelab_lang"]
+            source_code = params["codelab_src"]
+            
+            ai_prompt = f"You are CodeLab Tutor. Analyze this {lang} source code. Explain what it does, check for syntax errors, and teach the user how to optimize it:\n\n{source_code}"
+            st.info(f"🧠 CodeLab Engine analyzing {lang.upper()} script...")
+            
+            try:
+                response = client.models.generate_content(model="gemini-2.5-flash", contents=ai_prompt)
+                st.write("### 🤖 AI Tutor Feedback:")
+                st.write(response.text)
+            except Exception as e:
+                st.error(f"Could not connect to Tutor subagent: {e}")
+                
+            st.query_params.clear()
     elif IO == "codelab":
         try:
             with open("html/code_lab.html", "r") as file:
