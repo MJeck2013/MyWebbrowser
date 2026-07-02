@@ -204,7 +204,7 @@ if IO:
             st.success(f"🎉 Saved idea for '{app_name}' safely!")
             st.query_params.clear()
             
-elif IO == "codelab":
+    elif IO == "codelab":
         # Clear out any sneaky appcreator query parameters instantly
         if any(p in st.query_params for p in ["new_app_name", "new_app_desc", "new_prNo"]):
             st.query_params.clear()
